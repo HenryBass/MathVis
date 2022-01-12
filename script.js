@@ -3,7 +3,7 @@ var canvasWidth = canvas.width;
 var canvasHeight = canvas.height;
 var ctx = canvas.getContext("2d");
 var canvasData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
-ctx.fillStyle = "black";
+ctx.fillStyle = "#00";
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 const startTime = Date.now();
@@ -20,7 +20,7 @@ function drawPixel (x, y, r, g, b) {
     ctx.putImageData(canvasData, 0, 0);
 }
 function clear() {
-  ctx.fillStyle = "black";
+  ctx.fillStyle = "#00";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
@@ -36,6 +36,7 @@ function draw() {
       const formula = `with(Math) { ${document.getElementById("code").value} }`;
 
         output = eval(formula)
+
         ctx.fillStyle = 'rgb(' + (output*255) + ', 0, 0)';
         ctx.fillRect(x, y, 1, 1);
      
