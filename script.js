@@ -1,51 +1,59 @@
+window.onload = function() {
+
 var canvas = document.getElementById("canvas");
-var canvasWidth = canvas.width;
-var canvasHeight = canvas.height;
-var ctx = canvas.getContext("2d");
-var canvasData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
-ctx.fillStyle = "#00";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
+var ctx = canvas.getContext('2d', { alpha: false });
 
-const startTime = Date.now();
+var width = canvas.width;
+var height = canvas.height;
+var c = 0;
+var ex = 0;
 
-var i = 0; 
-var c = 255;
+examples = ["x&y", "(x%y)/255", "((x-128)*(x-128)+(y-128)*(y-128)) > (sin(t * 2)) * 10000", "sin((x / t)*(y / t))", "sin((x * t)*(y * t))"]
 
-function drawPixel (x, y, r, g, b) {
-    var index = (x + y * canvasWidth) * 4;
-    
-    canvasData.data[index + 0] = r;
-    canvasData.data[index + 1] = g;
-    canvasData.data[index + 2] = b;
-    ctx.putImageData(canvasData, 0, 0);
-}
-function clear() {
-  ctx.fillStyle = "#00";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-}
+var imagedata = ctx.createImageData(width, height);
 
-function draw() {
+document.getElementById("example").addEventListener("click", changeex); 
 
-  for(y=0;y<canvasHeight;y++) {
-    for(x=0;x<canvasWidth;x++) {
-      i += 1;
-
-      var now = Date.now();
-      var t = (now - startTime) / 1000;
-
-      const formula = `with(Math) { ${document.getElementById("code").value} }`;
-
-        output = eval(formula)
-
-        ctx.fillStyle = 'rgb(' + (output*255) + ', 0, 0)';
-        ctx.fillRect(x, y, 1, 1);
-     
-    }
+function changeex() {
+  document.getElementById("code").value = examples[ex];
+  if (ex < (examples.length - 1)) {
+    ex += 1;
+  } else {
+    ex = 0;
   }
-  i = 0;
-  
-  setInterval(draw, 100)
   
 }
 
-draw()
+
+function draw(t) {
+	eval(`for (var x=0; x<canvas.width; x++) {
+          for (var y=0; y<canvas.height; y++) {
+            
+              var i = (y * width + x);
+              var pixel = i * 4;
+              
+                with(Math) {
+                    var val = ${document.getElementById("code").value};
+
+                    if (val >= 0) {
+                      imagedata.data[pixel + 0] = (255 * (val));
+                      imagedata.data[pixel + 2] = (0);
+                    } else{
+                      imagedata.data[pixel + 2] = (255 * Math.abs(val));
+                      imagedata.data[pixel + 0] = (0);
+                    }
+
+                   imagedata.data[pixel+3] = 255;  
+                }
+            }
+        }`)
+	}
+
+	function main(frame) {
+		window.requestAnimationFrame(main);
+		draw((frame/1000));
+		ctx.putImageData(imagedata, 0, 0);
+	}
+	main(0);
+
+}

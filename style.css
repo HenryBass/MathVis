@@ -16,4 +16,13 @@ input {
   text-decoration: none;
   border: 2px solid black;
   display: inline-block;
+  width: 256px;
+}
+
+button {
+  background-color: white;
+  color: black;
+  text-decoration: none;
+  border: 2px solid black;
+  display: inline-block;
 }
