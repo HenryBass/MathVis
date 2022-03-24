@@ -8,7 +8,7 @@ var height = canvas.height;
 var c = 0;
 var ex = 0;
 
-examples = ["x&y", "(x%y)/255", "((x-128)*(x-128)+(y-128)*(y-128)) > (sin(t * 2)) * 10000", "sin((x / t)*(y / t))", "sin((x * t)*(y * t))", "cos(tan(sin(x&t) + sin(y & t)))"]
+examples = ["x&y", "(x%y)/255", "((x-128)*(x-128)+(y-128)*(y-128)) > (sin(t * 2)) * 10000", "sin((x / t)*(y / t))", "sin((x * t)*(y * t))", "cos(tan(sin(x&t) + sin(y & t)))", "sin((x + t)**2) / sin((y + t)**2) > 1"]
 
 var imagedata = ctx.createImageData(width, height);
 
